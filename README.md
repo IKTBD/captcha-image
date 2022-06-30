@@ -67,6 +67,7 @@ use Iktbd\CaptchaImage\Captcha;
 //Use the same password
 $password='gdduy43546';
 
+//Get the input from the form submit
 $id=$_POST['captcha_id'];
 $text=$_POST['captcha_text'];
 
