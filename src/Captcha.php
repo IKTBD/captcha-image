@@ -2,58 +2,63 @@
 
 namespace Iktbd\CaptchaImage;
 
-class Captcha{
+class Captcha
+{
+    /**
+     * @var ICaptchaHash
+     */
+    private static $ICaptchaHash;
+    /**
+     * @var CaptchaImage
+     */
+    private static $ICaptchaImage;
+    /**
+     * @var CodeGenerator
+     */
+    private static $ICodeGenerator;
+    /**
+     * @var LettersGenerator
+     */
+    private static $ILettersGenerator;
 
-    public static function create($password)
+    private static $widthCaptcha = 250;
+    private static $heightCaptcha = 50;
+
+    private static function init()
     {
-
-        $width=250;
-        $height=50;
-        $password=$password;
-        $font =  __DIR__.'/font/Berton-Roman-trial.ttf';
-        $total_text='';
-
-        $x_array=[20,60,100,140,180,220];
-        $text_array=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9'];
-        $image_array=[];
-
-        for($i=0;$i<=5;$i++)
-        {
-            $text_rand=rand(0,51);
-            $text=$text_array[$text_rand];
-            $total_text.=$text;
-            $x=$x_array[$i];
-            $angle=rand(0,90);
-            $y=rand(30,50);
-            $font_size=rand(15,25);
-            $image_array[]=['font'=>$font,'size'=>$font_size,'angle'=>$angle,'x'=>$x,'y'=>$y,'text'=>$text];
-        }
-
-        ob_start();
-        $im = imagecreate($width, $height);
-        $white = imagecolorallocate($im, 255, 255, 255);
-        $black = imagecolorallocate($im, 0, 0, 0);
-        imagefilledrectangle($im, 0, 0, $width, $height, $white);
-        foreach($image_array as $key=>$value)
-        {imagettftext($im,$value['size'],$value['angle'], $value['x'],$value['y'], $black, $value['font'],$value['text']);}
-        imagepng($im);
-        imagedestroy($im);
-        $contents = ob_get_contents();
-        ob_end_clean();
-        $id=md5($password.strtolower($total_text));
-        $image_string='data:image/png;base64,'.base64_encode($contents);
-        $image_data['id']=$id;
-        $image_data['data']=$image_string;
-
-        return $image_data;
+        self::$ICaptchaHash = new CaptchaHash();
+        self::$ICaptchaImage = new CaptchaImage();
+        self::$ICodeGenerator = new CodeGenerator();
+        self::$ILettersGenerator = new LettersGenerator();
     }
 
-    public static function check($password,$id,$text)
+    public static function create(string $password): array
     {
-        $output=false;
-        $password=$password;
-        $new_id=md5($password.strtolower($text));
-        if($new_id==$id){$output=true;}
-        return $output;
+        self::init();
+
+        $codeString = (self::$ICodeGenerator)::codeGenerator(6);
+        $letters = (self::$ILettersGenerator)::generateLetters($codeString, [
+            'leftPadding' => 20,
+            'letterSpacing' => 40,
+        ]);
+
+        $imageContent = (self::$ICaptchaImage)::generateImage(self::$widthCaptcha, self::$heightCaptcha, $letters);
+
+        return [
+            'id' => (self::$ICaptchaHash)::generateHash($password, $codeString),
+            'data' => 'data:image/png;base64,' . base64_encode($imageContent)
+        ];
+    }
+
+    public static function check(string $password, string $id, string $codeString): bool
+    {
+        self::init();
+
+        $hash = (self::$ICaptchaHash)::generateHash($password, $codeString);
+        if ($hash == $id) {
+            return true;
+        }
+
+        return false;
     }
 }
