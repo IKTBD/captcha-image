@@ -31,8 +31,11 @@ Note that the `vendor` folder and the `vendor/autoload.php` script are generated
 <?php
 use Iktbd\CaptchaImage\Captcha;
 
+//Give a password as your wish
+$password='gdduy43546';
+
 //Create new captcha
-$make=Captcha::create();
+$make=Captcha::create($password);
 
 $id=$make['id'];
 
@@ -61,11 +64,14 @@ $image_string=$make['data'];
 <?php
 use Iktbd\CaptchaImage\Captcha;
 
+//Use the same password
+$password='gdduy43546';
+
 $id=$_POST['captcha_id'];
 $text=$_POST['captcha_text'];
 
 //Check submitted captcha data
-$result=Captcha::check($id,$text);
+$result=Captcha::check($password,$id,$text);
 
 if($result==true)
 {

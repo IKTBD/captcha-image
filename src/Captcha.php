@@ -4,12 +4,12 @@ namespace Iktbd\CaptchaImage;
 
 class Captcha{
 
-    public static function create()
+    public static function create($password)
     {
 
         $width=250;
         $height=50;
-        $password='tret5465';
+        $password=$password;
         $font =  __DIR__.'/font/Berton-Roman-trial.ttf';
         $total_text='';
 
@@ -48,10 +48,10 @@ class Captcha{
         return $image_data;
     }
 
-    public static function check($id,$text)
+    public static function check($password,$id,$text)
     {
         $output=false;
-        $password='tret5465';
+        $password=$password;
         $new_id=md5($password.strtolower($text));
         if($new_id==$id){$output=true;}
         return $output;
