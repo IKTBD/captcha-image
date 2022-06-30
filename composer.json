@@ -1,0 +1,19 @@
+{
+    "name": "iktbd/captcha-image",
+    "description": "Make your security captcha image",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Iktbd\\CaptchaImage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Md. Ibrahim Khalil",
+            "email": "ibrahim0132@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
