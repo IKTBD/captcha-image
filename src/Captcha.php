@@ -7,8 +7,8 @@ class Captcha{
     public static function create()
     {
 
-        $width=50;
-        $height=200;
+        $width=250;
+        $height=50;
         $password='tret5465';
         $font =  __DIR__.'/font/Berton-Roman-trial.ttf';
         $total_text='';
@@ -21,7 +21,6 @@ class Captcha{
         {
             $text_rand=rand(0,51);
             $text=$text_array[$text_rand];
-            $total_text.=$text;
             $total_text.=$text;
             $x=$x_array[$i];
             $angle=rand(0,90);
@@ -41,19 +40,19 @@ class Captcha{
         imagedestroy($im);
         $contents = ob_get_contents();
         ob_end_clean();
-        $id=md5($password.$total_text);
+        $id=md5($password.strtolower($total_text));
         $image_string='data:image/png;base64,'.base64_encode($contents);
-        $image_data['id']=$id
+        $image_data['id']=$id;
         $image_data['data']=$image_string;
 
-        return $image_data
+        return $image_data;
     }
 
     public static function check($id,$text)
     {
         $output=false;
         $password='tret5465';
-        $new_id=md5($password.$text);
+        $new_id=md5($password.strtolower($text));
         if($new_id==$id){$output=true;}
         return $output;
     }

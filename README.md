@@ -48,7 +48,7 @@ $image_string=$make['data'];
 <form id="" action="#" method="post">
 <input type="hidden" name="captcha_id" value="{{$id}}">
 <img src="{{$image_string}}" height="50" width="200">
-<input type="hidden" name="captcha_text" value="">
+<input type="text" name="captcha_text" value="">
 <input type="submit" value="Submit">
 </form>
 
