@@ -46,7 +46,7 @@ $_SESSION['captcha_id']=$id;
 
 ```
 
-### Use the $image_string and $id in the html 
+### Use the $image_string in the html 
 
 ```html
 
