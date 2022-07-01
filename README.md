@@ -1,4 +1,4 @@
-# captcha-image
+# captcha-image V 2.00
 Make your security captcha image
 
 
@@ -13,7 +13,7 @@ Make your security captcha image
 captcha-image is available on [Packagist](https://packagist.org/packages/iktbd/captcha-image) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install captcha-image. Just add this line to your `composer.json` file:
 
 ```json
-"iktbd/captcha-image": "^1.00"
+"iktbd/captcha-image": "^2.00"
 ```
 
 or run
@@ -27,31 +27,26 @@ Note that the `vendor` folder and the `vendor/autoload.php` script are generated
 # Use the captcha-image
 
 ### Create captcher
+
 ```php
 <?php
 use Iktbd\CaptchaImage\Captcha;
 
-//Give a password as your wish
-$password='gdduy43546';
+//Set your password as your wish
+$password='djhfhdfywh53477';
 
 //Create new captcha
-$make=Captcha::create($password);
+$src_string=Captcha::create($password);
 
-$id=$make['id'];
-
-$image_string=$make['data'];
-
-//Keep your captcha id in a session 
-$_SESSION['captcha_id']=$id;
 
 ```
 
-### Use the $image_string in the html 
+### Use the $src_string in the html image
 
 ```html
 
 <form id="" action="#" method="post">
-<img src="{{$image_string}}" height="50" width="250">
+<img src="{{$src_string}}" height="50" width="250">
 <input type="text" name="captcha_text" value="">
 <input type="submit" value="Submit">
 </form>
@@ -65,17 +60,15 @@ $_SESSION['captcha_id']=$id;
 <?php
 use Iktbd\CaptchaImage\Captcha;
 
-//Use the same password
-$password='gdduy43546';
 
-//Get the captcha id from the session
-$id=$_SESSION['captcha_id'];
+//Set your same password
+$password='djhfhdfywh53477';
 
 //Get the input value from the form submit
 $text=$_POST['captcha_text'];
 
 //Check submitted captcha data
-$result=Captcha::check($password,$id,$text);
+$result=Captcha::verify($password,$text);
 
 if($result==true)
 {
@@ -89,7 +82,17 @@ else
 
 ```
 
+
 ## Note
+
+- If you want to create a new captcha and verify your old submitted captcha then verify your old submitted captcha first then create new captcha
+- You should remember that every new captcha generate a new session and delete the old session.
+- So, if you create a new captcha than if you verify the old submitted captcha then it will return false. Because the old captcha data already deleted when you create a new captcha
+
+
+
+
+## Error Note
 
 - Be sure that your PHP GD extension is enable else you will get an error.
 - If your PHP GD extension is not enable, then enable the GD extension.

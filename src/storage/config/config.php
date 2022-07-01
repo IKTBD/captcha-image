@@ -1,0 +1,1 @@
+<?php $data=['width'=>250,'height'=>50,'password'=>'djhfhdfywh53477','max_font_size'=>25,'min_font_size'=>15]; ?>
