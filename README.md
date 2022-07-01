@@ -1,4 +1,4 @@
-# captcha-image
+# captcha-image V 1.00
 Make your security captcha image
 
 
