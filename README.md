@@ -94,5 +94,6 @@ else
 - Be sure that your PHP GD extension is enable else you will get an error.
 - If your PHP GD extension is not enable, then enable the GD extension.
 - To enable PHP GD extension, go to your cpanel then go to PHP version selector then tick the GD check box and save it.
-- Or check if in your `php.ini` file has the following line `;extension=gd` - If exists, change it to `extension=gd`
+- Or check if in your `php.ini` file has the following line `;extension=gd`
+- If exists, change it to `extension=gd`
 - If not found, Add this `extension=gd` to your `php.ini`
