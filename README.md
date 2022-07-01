@@ -41,6 +41,8 @@ $id=$make['id'];
 
 $image_string=$make['data'];
 
+//Keep your captcha id in a session 
+$_SESSION['captcha_id']=$id;
 
 ```
 
@@ -49,7 +51,6 @@ $image_string=$make['data'];
 ```html
 
 <form id="" action="#" method="post">
-<input type="hidden" name="captcha_id" value="{{$id}}">
 <img src="{{$image_string}}" height="50" width="250">
 <input type="text" name="captcha_text" value="">
 <input type="submit" value="Submit">
@@ -67,8 +68,10 @@ use Iktbd\CaptchaImage\Captcha;
 //Use the same password
 $password='gdduy43546';
 
+//Get the captcha id from the session
+$id=$_SESSION['captcha_id'];
+
 //Get the input value from the form submit
-$id=$_POST['captcha_id'];
 $text=$_POST['captcha_text'];
 
 //Check submitted captcha data
@@ -86,6 +89,10 @@ else
 
 ```
 
-# More
+## Note
 
-Please use this and enjoy your life
+- Be sure that your PHP GD extension is enable else you will get an error.
+- If your PHP GD extension is not enable, then enable the GD extension.
+- To enable PHP GD extension, go to your cpanel then go to PHP version selector then tick the GD check box and save it.
+- Or check if in your `php.ini` file has the following line `;extension=gd` - If exists, change it to `extension=gd`
+- If not found, Add this `extension=gd` to your `php.ini`
