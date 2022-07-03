@@ -4,5 +4,5 @@ namespace Iktbd\CaptchaImage;
 
 interface ICodeGenerator
 {
-    public static function codeGenerator(int $length): string;
+    public function codeGenerator(int $length): string;
 }

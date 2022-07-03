@@ -8,7 +8,7 @@ class CodeGenerator implements ICodeGenerator
      * @param int $length
      * @return string
      */
-    public static function codeGenerator(int $length): string
+    public function codeGenerator(int $length): string
     {
         $letters = array_merge(range('A', 'Z'), range('a', 'z'), range('0', '9'));
 

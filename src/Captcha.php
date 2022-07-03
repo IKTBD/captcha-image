@@ -5,57 +5,96 @@ namespace Iktbd\CaptchaImage;
 class Captcha
 {
     /**
+     * @var ICaptchaFactory
+     */
+    private static $captchaFactory = null;
+    /**
      * @var ICaptchaHash
      */
-    private static $ICaptchaHash;
+    private static $captchaHash;
     /**
-     * @var CaptchaImage
+     * @var ICaptchaImage
      */
-    private static $ICaptchaImage;
+    private static $captchaImage;
     /**
-     * @var CodeGenerator
+     * @var ICodeGenerator
      */
-    private static $ICodeGenerator;
+    private static $codeGenerator;
     /**
-     * @var LettersGenerator
+     * @var ILettersGenerator
      */
-    private static $ILettersGenerator;
+    private static $lettersGenerator;
 
-    private static $widthCaptcha = 250;
-    private static $heightCaptcha = 50;
+    /**
+     * @var int
+     */
+    private static $captchaWidth = 250;
+    /**
+     * @var int
+     */
+    private static $captchaHeight = 50;
 
-    private static function init()
+    /**
+     * @param ICaptchaFactory|null $captchaFactory
+     * @return void
+     */
+    public static function init(ICaptchaFactory $captchaFactory = null)
     {
-        self::$ICaptchaHash = new CaptchaHash();
-        self::$ICaptchaImage = new CaptchaImage();
-        self::$ICodeGenerator = new CodeGenerator();
-        self::$ILettersGenerator = new LettersGenerator();
+        self::$captchaFactory = $captchaFactory ?? new CaptchaFactory();
+
+        self::$captchaHash = self::$captchaFactory->createCaptchaHash();
+        self::$captchaImage = self::$captchaFactory->createCaptchaImage();
+        self::$codeGenerator = self::$captchaFactory->createCodeGenerator();
+        self::$lettersGenerator = self::$captchaFactory->createLettersGenerator();
     }
 
+    /**
+     * @return void
+     */
+    public static function unSetFactory()
+    {
+        self::$captchaFactory = null;
+    }
+
+    /** Create captcha
+     * @param string $password
+     * @return array
+     */
     public static function create(string $password): array
     {
-        self::init();
+        if (self::$captchaFactory == null) {
+            self::init();
+        }
 
-        $codeString = (self::$ICodeGenerator)::codeGenerator(6);
-        $letters = (self::$ILettersGenerator)::generateLetters($codeString, [
+        $codeString = (self::$codeGenerator)->codeGenerator(6);
+
+        $letters = (self::$lettersGenerator)->generateLetters($codeString, [
             'leftPadding' => 20,
             'letterSpacing' => 40,
         ]);
 
-        $imageContent = (self::$ICaptchaImage)::generateImage(self::$widthCaptcha, self::$heightCaptcha, $letters);
+        $imageContent = (self::$captchaImage)->generateImage(self::$captchaWidth, self::$captchaHeight, $letters);
 
         return [
-            'id' => (self::$ICaptchaHash)::generateHash($password, $codeString),
+            'id' => (self::$captchaHash)->generateHash($password, $codeString),
             'data' => 'data:image/png;base64,' . base64_encode($imageContent)
         ];
     }
 
+    /** Check captcha result
+     * @param string $password
+     * @param string $id
+     * @param string $codeString
+     * @return bool
+     */
     public static function check(string $password, string $id, string $codeString): bool
     {
-        self::init();
+        if (self::$captchaFactory == null) {
+            self::init();
+        }
 
-        $hash = (self::$ICaptchaHash)::generateHash($password, $codeString);
-        if ($hash == $id) {
+        $captchaHash = (self::$captchaHash)->generateHash($password, $codeString);
+        if ($captchaHash == $id) {
             return true;
         }
 

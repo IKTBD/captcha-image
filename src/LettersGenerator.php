@@ -4,10 +4,15 @@ namespace Iktbd\CaptchaImage;
 
 class LettersGenerator implements ILettersGenerator
 {
-    public static function generateLetters(string $text, array $options = []): array
+    /**
+     * @param string $text
+     * @param array $options
+     * @return array
+     */
+    public function generateLetters(string $text, array $options = []): array
     {
         $lettersList = str_split($text);
-        $xLetterPositions = self::generateXPositions($lettersList, $options);
+        $xLetterPositions = $this->generateXPositions($lettersList, $options);
 
         return array_map(function ($letter, $pos): array {
             return [
@@ -20,7 +25,7 @@ class LettersGenerator implements ILettersGenerator
         }, $lettersList, $xLetterPositions);
     }
 
-    private static function generateXPositions(array $letters, array $options = []): array
+    private function generateXPositions(array $letters, array $options = []): array
     {
         $options = [
             'leftPadding' => $options['leftPadding'] ?? 20,

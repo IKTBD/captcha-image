@@ -8,7 +8,7 @@ class CodeGeneratorTest extends TestCase
     public function testCodeGenerator()
     {
         $length = 5;
-        $code = CodeGenerator::codeGenerator($length);
+        $code = (new CodeGenerator())->codeGenerator($length);
         $this->assertIsString($code);
         $this->assertSame($length, strlen($code));
     }

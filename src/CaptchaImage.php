@@ -2,16 +2,15 @@
 
 namespace Iktbd\CaptchaImage;
 
-class CaptchaImage
+class CaptchaImage implements ICaptchaImage
 {
-
     /**
      * @param int $width
      * @param int $height
      * @param array $letters
      * @return false|string
      */
-    public static function generateImage(int $width, int $height, array $letters): string
+    public function generateImage(int $width, int $height, array $letters): string
     {
         $font = __DIR__ . '/font/Berton-Roman-trial.ttf';
 

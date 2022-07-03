@@ -11,8 +11,9 @@ class CaptchaHashTest extends TestCase
         $codeTwo = 'test2';
         $password = 'testPassword';
 
-        $hashOne = CaptchaHash::generateHash($password, $codeOne);
-        $hashTwo = CaptchaHash::generateHash($password, $codeTwo);
+        $captchaHash = new CaptchaHash();
+        $hashOne = $captchaHash->generateHash($password, $codeOne);
+        $hashTwo = $captchaHash->generateHash($password, $codeTwo);
 
         $this->assertNotEquals($hashOne, $hashTwo);
         $this->assertSame(32, strlen($hashOne));

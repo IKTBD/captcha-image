@@ -9,7 +9,7 @@ class CaptchaHash implements ICaptchaHash
      * @param string $codeString
      * @return string
      */
-    public static function generateHash(string $password, string $codeString): string
+    public function generateHash(string $password, string $codeString): string
     {
         return md5($password . strtolower($codeString));
     }

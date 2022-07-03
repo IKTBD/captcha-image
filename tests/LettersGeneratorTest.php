@@ -11,7 +11,7 @@ class LettersGeneratorTest extends TestCase
     {
         $word = 'test';
 
-        $letters = LettersGenerator::generateLetters($word, [
+        $letters = (new LettersGenerator)->generateLetters($word, [
             'leftPadding' => 20,
             'letterSpacing' => 40,
         ]);
