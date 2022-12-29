@@ -1,6 +1,8 @@
 # captcha-image V 2.00
 Make your security captcha image
 
+![alt text](https://github.com/IKTBD/captcha-image/blob/main/image.png?raw=true)
+
 
 ## Features
 
